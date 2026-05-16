@@ -187,6 +187,26 @@ source ~/.bashrc  # or source ~/.zshrc
 claw --help
 ```
 
+**Option 4: Store your configuration in `~/.claw/`**
+
+- Store your credentials/API keys in the file `~/.claw/.env` (or `%USERPROFILE%\.claw\.env` if you are using Windows):
+  ```
+  ANTHROPIC_API_KEY=sk-............
+  ANTHROPIC_BASE_URL=https://API.SAMPLE.COM
+  ```
+ 
+- Store your preferred settings (default model, fallbacks, etc.) in the file `~/.claw/settings.local.json` (or `%USERPROFILE%\.claw\settings.local.json` if you are using Windows):
+  ```
+  {
+    "model": "deepseek-v4-pro",
+	"providerFallbacks": {
+	  "primary": "deepseek-v4-pro",
+	  "fallbacks": ["deepseek-v4-flash"]
+	  }
+  }
+  ```
+This way, you don't need to pass them via command line every time.
+
 ### Troubleshooting
 
 - **"command not found: claw"** — The binary is in `rust/target/debug/claw`, but it's not on your PATH. Use the full path `./rust/target/debug/claw` or symlink/install as above.

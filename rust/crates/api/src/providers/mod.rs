@@ -796,7 +796,15 @@ pub(crate) fn load_dotenv_file(
 /// is empty.
 pub(crate) fn dotenv_value(key: &str) -> Option<String> {
     let cwd = std::env::current_dir().ok()?;
-    let values = load_dotenv_file(&cwd.join(".env"))?;
+    let file = cwd.join(".env");
+    if file.exists() {
+        let values = load_dotenv_file(&file)?;
+        return values.get(key).filter(|value| !value.is_empty()).cloned();
+    }
+    let home = std::env::var_os("HOME")
+        .or_else(|| std::env::var_os("USERPROFILE"))?;
+    let claw_env = std::path::Path::new(&home).join(".claw").join(".env");
+    let values = load_dotenv_file(&claw_env)?;
     values.get(key).filter(|value| !value.is_empty()).cloned()
 }
 
